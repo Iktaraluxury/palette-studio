@@ -1,0 +1,19 @@
+{
+  "name": "palette-studio",
+  "version": "1.0.0",
+  "description": "Convert colors, build palettes, check WCAG contrast and export design tokens. Runs entirely in the browser.",
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  },
+  "keywords": [
+    "color",
+    "palette",
+    "design-tokens",
+    "contrast",
+    "wcag",
+    "tailwind",
+    "css-variables"
+  ],
+  "license": "MIT"
+}
