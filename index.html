@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Palette Studio - colors, contrast and design tokens</title>
+  <meta name="description" content="Convert colors, build palettes, check WCAG contrast and export design tokens for CSS, SCSS, Tailwind and W3C JSON. Free, open source, no uploads.">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%236d5ef0'/><circle cx='36' cy='38' r='16' fill='%23fff' opacity='.9'/><circle cx='62' cy='60' r='16' fill='%23ffd166'/></svg>">
+</head>
+<body>
+  <header class="site-header">
+    <div class="logo" aria-hidden="true">
+      <span class="dot dot-a"></span><span class="dot dot-b"></span>
+    </div>
+    <div>
+      <h1>Palette Studio</h1>
+      <p class="tagline">Convert colors, build palettes, check contrast and export design tokens. Everything runs in your browser - nothing is uploaded.</p>
+    </div>
+  </header>
+
+  <main>
+    <!-- Converter -->
+    <section class="card" aria-labelledby="converter-h">
+      <h2 id="converter-h">Color converter</h2>
+      <p class="hint">Type a color in any format: <code>#e63946</code>, <code>rgb(230, 57, 70)</code> or <code>355 78% 56%</code>.</p>
+      <div class="converter-row">
+        <div class="swatch-large" id="conv-swatch" role="img" aria-label="Current color preview"></div>
+        <div class="converter-fields">
+          <div class="input-row">
+            <input type="text" id="conv-input" placeholder="#6d5ef0" autocomplete="off" spellcheck="false" aria-label="Color input">
+            <input type="color" id="conv-picker" value="#6d5ef0" aria-label="Pick a color visually">
+          </div>
+          <p class="error" id="conv-error" hidden>That does not look like a color. Try #e63946, rgb(230, 57, 70) or 355 78% 56%.</p>
+          <dl class="value-list" id="conv-values"></dl>
+        </div>
+      </div>
+      <h3>Shade scale</h3>
+      <p class="hint">Click any shade to copy its hex.</p>
+      <div class="shade-strip" id="shade-strip"></div>
+    </section>
+
+    <!-- Palette builder -->
+    <section class="card" aria-labelledby="palette-h">
+      <h2 id="palette-h">Your palette</h2>
+      <div class="input-row">
+        <input type="text" id="palette-name" placeholder="Name, e.g. Brand Blue" aria-label="Color name">
+        <button class="btn primary" id="add-color">Add current color</button>
+      </div>
+      <details class="import-box">
+        <summary>Import hex codes from text</summary>
+        <textarea id="import-text" rows="3" placeholder="Paste any text or code with hex codes, e.g. from a stylesheet or brand guide"></textarea>
+        <button class="btn" id="import-btn">Extract colors</button>
+      </details>
+      <ul class="palette-list" id="palette-list"></ul>
+      <p class="hint" id="palette-empty">No colors yet. Add the color above, or import hex codes from existing text.</p>
+    </section>
+
+    <!-- Contrast checker -->
+    <section class="card" aria-labelledby="contrast-h">
+      <h2 id="contrast-h">Contrast checker</h2>
+      <p class="hint">WCAG 2.x thresholds: AA needs 4.5:1 for normal text and 3:1 for large text; AAA needs 7:1 and 4.5:1.</p>
+      <div class="contrast-grid">
+        <div>
+          <label for="fg-input">Text color</label>
+          <div class="input-row">
+            <input type="text" id="fg-input" value="#111827" autocomplete="off" spellcheck="false">
+            <input type="color" id="fg-picker" value="#111827" aria-label="Pick text color visually">
+          </div>
+          <div class="palette-picks" id="fg-picks"></div>
+        </div>
+        <div>
+          <label for="bg-input">Background</label>
+          <div class="input-row">
+            <input type="text" id="bg-input" value="#ffffff" autocomplete="off" spellcheck="false">
+            <input type="color" id="bg-picker" value="#ffffff" aria-label="Pick background color visually">
+          </div>
+          <div class="palette-picks" id="bg-picks"></div>
+        </div>
+      </div>
+      <div class="contrast-result">
+        <div class="contrast-preview" id="contrast-preview">
+          <span class="preview-normal">Normal text Aa</span>
+          <span class="preview-large">Large text Aa</span>
+        </div>
+        <div class="contrast-score">
+          <strong id="ratio-value">21:1</strong>
+          <div class="badges" id="badges"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Export -->
+    <section class="card" aria-labelledby="export-h">
+      <h2 id="export-h">Export design tokens</h2>
+      <p class="hint">Each color is exported with its ten-step shade scale.</p>
+      <div class="tabs" role="tablist" aria-label="Export format">
+        <button class="tab active" role="tab" aria-selected="true" data-format="css">CSS</button>
+        <button class="tab" role="tab" aria-selected="false" data-format="scss">SCSS</button>
+        <button class="tab" role="tab" aria-selected="false" data-format="tailwind">Tailwind</button>
+        <button class="tab" role="tab" aria-selected="false" data-format="json">W3C JSON</button>
+        <button class="tab" role="tab" aria-selected="false" data-format="list">Plain list</button>
+      </div>
+      <pre class="export-code" id="export-code" tabindex="0"></pre>
+      <div class="input-row">
+        <button class="btn primary" id="copy-export">Copy</button>
+        <button class="btn" id="download-export">Download file</button>
+      </div>
+      <p class="hint" id="export-empty" hidden>Add colors to your palette to export tokens.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Palette Studio is open source under the MIT licence. Your palette is saved only in this browser.</p>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
